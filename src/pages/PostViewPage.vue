@@ -1,6 +1,6 @@
 <template>
     <div class="post-view-page">
-        <post-view :post="post"></post-view>
+        <post-view v-if="post" :post="post"></post-view>
         <router-link :to="{ name: 'PostListPage'}">목록</router-link>
     </div>
 </template>
