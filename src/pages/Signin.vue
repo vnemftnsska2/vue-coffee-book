@@ -9,7 +9,7 @@
 
 <script>
 import SigninForm from '@/components/SigninForm'
-import api from '@/api'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'Signin',
@@ -18,19 +18,16 @@ export default {
     },
     methods: {
         onSubmit(payload) {
-            const { email, password } = payload
-            api.post('/auth/signin', { email, password })
+            this.signin(payload)
                 .then(res => {
-                    const { accessToken } = res.data
-                    api.default.headers.common.Authorization = `Bearer${accessToken}`
-                    alert('로그인이 완료되었습니다.')
-                    this.$route.push({ name : 'PostListPage' })
+                    alert('로그인이 완료되있습니다.')
+                    this.$router.push({ name: 'PostListPage' })
                 })
                 .catch(err => {
                     alert(err.response.data.msg)
-                })
-
+                });
         },
-    }
+        ...mapActions([ 'signin' ]),
+    },
 }
 </script>

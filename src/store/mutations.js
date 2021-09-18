@@ -1,6 +1,10 @@
+import api from '@/api'
+import Cookies from 'js-cookie'
 import {
     FETCH_POST_LIST,
-    FETCH_POST
+    FETCH_POST,
+    SET_ACCESS_TOKEN,
+    SET_MY_INFO,
 } from './mutations-types'
 
 export default {
@@ -9,5 +13,17 @@ export default {
     },
     [FETCH_POST] (state, post) {
         state.post = post;
+    },
+    [SET_ACCESS_TOKEN] (state, accessToken) {
+        if (accessToken) {
+            state.accessToken = accessToken
+            api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+            Cookies.set('accessToken', accessToken)
+        }
+    },
+    [SET_MY_INFO] (state, me) {
+        if (me) {
+            state.me = me
+        }
     }
 }
