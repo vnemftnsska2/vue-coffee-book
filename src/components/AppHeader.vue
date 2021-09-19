@@ -8,7 +8,7 @@
                 <i v-else class="fas fa-sort-up"></i>
             </strong>
             <ul v-if="isActive">
-                <li><button>로그아웃</button></li>
+                <li><button @click="onClickSignout">로그아웃</button></li>
             </ul>
         </div>
         <div v-else>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 export default {
     name: 'AppHeader',
     data() {
@@ -33,7 +33,12 @@ export default {
     methods: {
         toggle() {
             this.isActive = !this.isActive
-        }
+        },
+        onClickSignout() {
+            this.signout()
+            this.$router.push({ name: 'PostListPage', })
+        },
+        ...mapActions([ 'signout' ])
     }
 }
 </script>
