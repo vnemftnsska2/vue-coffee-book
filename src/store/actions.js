@@ -6,6 +6,9 @@ import {
     SET_MY_INFO,
     DESTROY_ACCESS_TOKEN,
     DESTROY_MY_INFO,
+    UPDATE_COMMENT,
+    EDIT_COMMENT,
+    DELETE_COMMENT,
 } from './mutations-types'
 
 export default {
@@ -31,6 +34,9 @@ export default {
             }).then(res => {
                 commit(SET_MY_INFO, res.data)
             })
+            .then(err => {
+                console.log('Login Err', err);
+            })
     },
     signinByToken({ commit }, token) {
         commit(SET_ACCESS_TOKEN, token)
@@ -42,5 +48,27 @@ export default {
     signout({ commit }) {
         commit(DESTROY_MY_INFO)
         commit(DESTROY_ACCESS_TOKEN)
+    },
+    createComment({ commit, state }, comment) {
+        const postId = state.post.id
+        return api.post(`/posts/${postId}/comments`, { contents: comment })
+            .then(res => {
+                commit(UPDATE_COMMENT, res.data)
+            })
+
+    },
+    editComment({ commit, state }, { commentId, comment }) {
+        const postId = state.post.id
+        return api.put(`/posts/${postId}/comments/${commentId}`, { contents: comment})
+            .then(res => {
+                commit(EDIT_COMMENT, res.data)
+            })
+    },
+    deleteComment({ commit, state }, commentId) {
+        const postId = state.post.id
+        return api.delete(`/posts/${postId}/comments/${commentId}`)
+            .then(res => {
+                commit(DELETE_COMMENT, commentId)
+            })
     }
 }
